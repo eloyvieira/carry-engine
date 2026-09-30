@@ -3,6 +3,7 @@ use anyhow::{anyhow, Result};
 use reqwest::Method;
 use serde_json::Value;
 
+#[allow(dead_code)]
 impl BinanceClient {
     pub async fn max_borrowable(&self, asset: &str) -> Result<f64> {
         let v = self.signed_request(
