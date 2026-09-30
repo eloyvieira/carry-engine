@@ -26,8 +26,24 @@ mysql -u root -p < sql/schema.sql
 ## Configuration
 
 ```bash
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+source "$HOME/.cargo/env"
+```
+
+Create the environment file:
+
+```bash
 cp .env.example .env
-# Fill in DATABASE_URL and, for private endpoints, BINANCE_API_KEY/BINANCE_API_SECRET
+```
+
+Load environment variables and start the application:
+
+```bash
+set -a
+source .env
+set +a
+
+cargo run
 ```
 
 ## Run
