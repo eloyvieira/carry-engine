@@ -44,8 +44,6 @@ Load environment variables and start the application:
 set -a
 source .env
 set +a
-
-cargo run
 ```
 
 Run:
