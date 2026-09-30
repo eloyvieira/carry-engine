@@ -11,12 +11,6 @@ Base project for collecting market history, ranking opportunities, checking Marg
 - `risk_monitor`: independently monitors quantity drift and basis expansion outside the entry/exit logic.
 - `MySQL`: stores market snapshots, opportunities, margin availability, positions, executions, and risk events.
 
-## Safety
-
-`LIVE_TRADING=false` is the default and blocks live order submission. Do not change it to `true` before validating quantity/notional filters for each symbol, the Futures account position mode, API permissions, and position-closing logic.
-
-The code deliberately does not automatically close positions when the basis widens. Basis expansion may be temporary; the exit policy should be implemented separately using net PnL, accumulated funding, borrowing interest, fees, basis persistence, and hedge health.
-
 ## Database
 
 ```bash
@@ -24,6 +18,14 @@ mysql -u root -p < sql/schema.sql
 ```
 
 ## Configuration
+
+Safety:
+
+```text
+`LIVE_TRADING=false` is enabled by default and prevents live orders.
+```
+
+Install Rust:
 
 ```bash
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
@@ -46,7 +48,7 @@ set +a
 cargo run
 ```
 
-## Run
+Run:
 
 ```bash
 cargo run
@@ -64,11 +66,11 @@ cargo run
 
 ## Before Production
 
-Four components still need to be completed before using real funds:
+Before using real funds, complete:
 
 - quantity rounding according to `LOT_SIZE`, `MARKET_LOT_SIZE`, `MIN_NOTIONAL/NOTIONAL`, and precision rules for each market;
 - real fill reconciliation to guarantee a 1:1 hedge after partial executions;
-- an explicit exit/position-closing module with failure recovery;
-- accurate accounting for fee tiers, funding received/paid, and borrowing interest actually charged.
+- position closing and failure recovery;
+- accurate fees, funding, and borrowing cost accounting.
 
-The project's priority should be market neutrality and capital preservation; profitability ranking comes after that.
+The priority is market neutrality and capital preservation.
