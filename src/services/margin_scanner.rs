@@ -6,7 +6,9 @@ use tracing::{info, warn};
 
 pub async fn run_once(cfg: &Config, client: &BinanceClient, pool: &Pool<MySql>) -> Result<()> {
     let rows = sqlx::query(
-        r#"SELECT o.symbol, s.base_asset, o.est_funding_apr
+        r#"SELECT o.symbol,
+           s.base_asset,
+           CAST(o.est_funding_apr AS DOUBLE) AS est_funding_apr
            FROM opportunities o
            JOIN (SELECT symbol, MAX(id) max_id FROM market_snapshots GROUP BY symbol) x ON x.symbol=o.symbol
            JOIN market_snapshots s ON s.id=x.max_id
